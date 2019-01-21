@@ -1,0 +1,7 @@
+C:\Users\Phuong Linh\Documents\Project\cooking\MyRecipes\MyRecipes\bin\MyRecipes.dll.config
+C:\Users\Phuong Linh\Documents\Project\cooking\MyRecipes\MyRecipes\bin\MyRecipes.dll
+C:\Users\Phuong Linh\Documents\Project\cooking\MyRecipes\MyRecipes\bin\MyRecipes.pdb
+C:\Users\Phuong Linh\Documents\Project\cooking\MyRecipes\MyRecipes\obj\Debug\MyRecipes.csprojResolveAssemblyReference.cache
+C:\Users\Phuong Linh\Documents\Project\cooking\MyRecipes\MyRecipes\obj\Debug\MyRecipes.csproj.CoreCompileInputs.cache
+C:\Users\Phuong Linh\Documents\Project\cooking\MyRecipes\MyRecipes\obj\Debug\MyRecipes.dll
+C:\Users\Phuong Linh\Documents\Project\cooking\MyRecipes\MyRecipes\obj\Debug\MyRecipes.pdb

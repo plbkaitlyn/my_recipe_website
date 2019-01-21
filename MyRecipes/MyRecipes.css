@@ -1,0 +1,127 @@
+﻿body {
+    font-family: 'Book Antiqua';
+    font-size: 15px;
+}
+#pageHeader {
+    margin: auto;
+    width: 90%;
+    height: 62px;
+    background-image: url("images/banner.jpg");
+}
+#headerForm {
+    float: right;            
+    padding: 6px;
+    margin: 10px;
+    border: 1px solid #f89650;
+    background-color: #ffffff;
+}
+#searchKeyword {
+    border: 0px;
+    outline: none;
+    width: 300px;
+    line-height: 26px;
+}
+#pageNavigation {
+    margin: auto;
+    width: 90%;
+    padding: 5px;
+    text-align: center;
+    font-size: 13px;
+    color: #f89650;
+    font-weight: bold;
+    border-bottom: 2px solid #f89650;
+}
+#pageNavigation a:link { 
+    color: #f89650;
+    text-decoration: none; 
+} 
+#pageNavigation a:visited { 
+    color: #f89650;
+    text-decoration: none; 
+} 
+#pageNavigation a:hover { 
+    color: #f89650;
+    text-decoration: underline; 
+} 
+#pageContents {
+    margin: auto;
+    width: 90%;    
+    text-align: center;
+    overflow: hidden;
+}
+#pageFooter {
+    margin: auto;
+    width: 90%;
+    padding: 5px;
+    font-size: 12px;
+    border-top: 2px solid #ff6a00;
+}
+.recipeHeadingPanel {
+	width: 300px;
+	height: 390px;
+	display: inline-block;
+	margin: 5px;
+	padding: 10px;
+	position: relative;
+	background-color: #ebe3b4;	
+}
+.recipeName {
+    font-size: 20px;
+    font-weight: bold;
+}
+.recipeImage {
+    width: 300px;
+    height: 300px;
+}
+#recipeImagePanel {
+    width: 300px;
+	margin: 5px;
+	padding: 10px;
+    display: inline-block;
+    vertical-align: top;
+}
+#recipeContentsPanel {
+    width: 60%;       
+	margin: 5px;
+	padding: 10px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+}
+.userName {
+    color: #0026ff;
+    margin-left: 30px;
+}
+.userComment {
+    font-style: italic;
+    margin-left: 30px;
+}
+#loginForm {
+    width: 300px;
+	margin: auto;
+	padding: 10px;
+    text-align: left;
+}
+.inputButton {
+    border: 0px;
+    background-color: #f89650;
+    color: #ffffff;
+    line-height: 26px;
+}
+.inputText {
+    border: 1px solid #f89650;
+    width: 300px;
+    outline: none;
+    line-height: 26px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.inputTextArea {
+    border: 1px solid #f89650;
+    outline: none;    
+    padding: 5px;
+}
+.errorMessage {
+    color: #ff0000;
+}
+
