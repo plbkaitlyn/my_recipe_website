@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>My Recipes</title>
+    <link rel="shortcut icon" href="#" />
     <link rel="stylesheet" href="MyRecipes.css" />
     <script src="MyRecipes.js"></script>
 </head>
@@ -17,10 +18,10 @@
     </div>
     <div id="pageNavigation">
         <div id="guestNavigation" runat="server">
-            <a href="/HomePage.aspx">H O M E</a> | <a href="javascript:void(0);">R E G I S T E R</a> | <a href="javascript:void(0);" onclick="displayLoginForm();">L O G I N</a>
+            <a href="/HomePage.aspx">H O M E</a> | <a href="javascript:void(0);" onclick="displayRegisterForm();">R E G I S T E R</a> | <a href="javascript:void(0);" onclick="displayLoginForm();">L O G I N</a>
         </div>
         <div id="userNavigation" runat="server">
-            <a href="/HomePage.aspx">H O M E</a> | <a href="javascript:void(0);">A D D &nbsp; R E C I P E</a> | <a href="javascript:void(0);" onclick="logout();">L O G O U T</a>
+            <a href="/HomePage.aspx">H O M E</a> | <a href="javascript:void(0);" onclick="displayAddedRecipe();">A D D &nbsp; R E C I P E</a> | <a href="javascript:void(0);" onclick="logout();">L O G O U T</a>
         </div>
     </div>
     <div id="pageContents"></div>

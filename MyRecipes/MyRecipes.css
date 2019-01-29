@@ -96,7 +96,7 @@
     font-style: italic;
     margin-left: 30px;
 }
-#loginForm {
+#loginForm, #registerForm, #recipeForm {
     width: 300px;
 	margin: auto;
 	padding: 10px;

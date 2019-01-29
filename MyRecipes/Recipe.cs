@@ -8,12 +8,13 @@ namespace MyRecipes
 {
     public class Recipe
     {
+        
         private int _id;
         public int Id
         {
             get { return _id; }
         }
-
+        
         private string _name;
         public string Name 
         {
@@ -50,21 +51,21 @@ namespace MyRecipes
             get { return _image; }
         }
 
+        private string _username;
+        public string Username
+        {
+            get { return _username; }
+        }
+
         private ArrayList _userComments = new ArrayList();
         public ArrayList UserComments
         {
             get { return _userComments; }
         }
 
-        public Recipe(int id, string name, string description, string image)
-        {
-            _id = id;
-            _name = name;
-            _description = description;
-            _image = image;
-        }
+        public Recipe() { }
 
-        public Recipe(int id, string name, string description, int time, string ingredients, string instructions, string image)
+        public Recipe(int id, string name, string description, string image)
         {
             if (name == null || name == "")
             {
@@ -74,10 +75,32 @@ namespace MyRecipes
             {
                 throw new System.ArgumentException("Recipe's description must have a value.");
             }
+            if (image == null || image == "")
+            {
+                throw new System.ArgumentException("Recipe's image must have a value.");
+            }
+            _id = id;
+            _name = name;
+            _description = description;
+            _image = image;
+        }
+
+        public Recipe(int id, string name, string description, int time, string ingredients, string instructions, string image, string username)
+        {
+            if (name == null || name == "")
+            {
+                throw new System.ArgumentException("Recipe's name must have a value.");
+            }
+            if (description == null || description == "")
+            {
+                throw new System.ArgumentException("Recipe's description must have a value.");
+            }
+            
             if (description.Length < 100)
             {
                 throw new System.ArgumentException("Recipe's description must have at least 100 characters.");
             }
+            
             if (time == 0)
             {
                 throw new System.ArgumentException("Recipe's cook time must be greater than 0.");
@@ -90,6 +113,10 @@ namespace MyRecipes
             {
                 throw new System.ArgumentException("Recipe's instructions must have a value.");
             }
+            if (image == null || image == "")
+            {
+                throw new System.ArgumentException("Recipe's image must have a value.");
+            }
             _id = id;
             _name = name; 
             _description = description;
@@ -97,6 +124,7 @@ namespace MyRecipes
             _ingredients = ingredients;
             _instructions = instructions;
             _image = image;
+            _username = username;
         }
 
         public void AddComment(string username, string comment)
