@@ -6,9 +6,9 @@ CREATE TABLE USERDATA (
 	userName		VARCHAR(50)			NOT NULL,
     email			VARCHAR(200)		NOT NULL,
     userPassword	VARCHAR(200)		NOT NULL,
-    CONSTRAINT user_pk PRIMARY KEY (userName)
+    CONSTRAINT user_pk PRIMARY KEY (userName),
+	CONSTRAINT user_ck UNIQUE (email);
 );
-
 
 CREATE TABLE RECIPE (
 	recipeID		INTEGER			AUTO_INCREMENT,
@@ -19,28 +19,10 @@ CREATE TABLE RECIPE (
     instructions	VARCHAR(1000)	NOT NULL,
     image			VARCHAR(200)	NOT NULL,
 	userName		VARCHAR(200)	NOT NULL,
+	FULLTEXT(ingredients),
     CONSTRAINT recipe_pk PRIMARY KEY (recipeID),
 	CONSTRAINT recipe_fk1 FOREIGN KEY (userName) REFERENCES USERDATA (userName)
 );
-/*
-CREATE TABLE TECHNIQUE (
-	tID				VARCHAR(20)		NOT NULL,
-    te_name			VARCHAR(50)		NOT NULL,
-    recipeID		VARCHAR(50)		NOT NULL,
-    CONSTRAINT technique_pk PRIMARY KEY (tID),
-    CONSTRAINT tedchnique_fk FOREIGN KEY (recipeID) REFERENCES RECIPE (recipeID)
-);
-
-CREATE TABLE RATING (
-	rateID			VARCHAR(50)		NOT NULL,
-    stars			INTEGER			NOT NULL,
-    record_number	INTEGER			NOT NULL,
-    average			INTEGER			NOT NULL,
-    recipeID		VARCHAR(50)		NOT NULL,
-    CONSTRAINT rate_pk PRIMARY KEY (rateID),
-    CONSTRAINT rate_fk FOREIGN KEY (recipeID) REFERENCES RECIPE (recipeID)
-);
-*/
 
 CREATE TABLE USERCOMMENT (
 	recipeID		INTEGER			NOT NULL,

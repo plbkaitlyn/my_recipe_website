@@ -5,207 +5,164 @@ using System.Web;
 using System.Collections;
 using System.Web.Script.Serialization;
 using MySql.Data.MySqlClient;
-//using System.Windows.Forms;
+using System.Configuration;
 
 namespace MyRecipes
 {
-    public class RecipeDBData
+    public class RecipeDBData : IRecipeData
     {
-        private static string server = "localhost";
-        private static string database = "mysql";
-        private static string uid = "root";
-        private static string password = "root";
-
-        static string connectionString = "SERVER=" + server + ";" + "DATABASE=" +
-                database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
-        private static MySqlConnection connection = new MySqlConnection(connectionString);
+        string _connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ToString();
 
         public RecipeDBData() { }  
         
         public ArrayList GetRecipeHeadings()
         {
-            if (connection.State == System.Data.ConnectionState.Closed)
-                connection.Open();
-
-            string recipeQuery = "SELECT * FROM recipe";
-
-            int recipeID;
-            string re_name;
-            string description;
-            string image;
-            
-            MySqlCommand recipeCmd = new MySqlCommand(recipeQuery, connection);
-            MySqlDataReader recipeDataReader = recipeCmd.ExecuteReader();
-
-            ArrayList _recipes = new ArrayList();
-
-            while (recipeDataReader.Read())
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
-                recipeID = Convert.ToInt32(recipeDataReader["recipeID"]);
-                re_name = Convert.ToString(recipeDataReader["re_name"]);
-                description = Convert.ToString(recipeDataReader["description"]);
-                image = Convert.ToString(recipeDataReader["image"]);
+                connection.Open();
+                string recipeQuery = "SELECT recipeID, re_name, description, image FROM recipe ORDER BY recipeID DESC LIMIT 6";
 
-                Recipe recipe = new Recipe(recipeID, re_name, description, image);
-                _recipes.Add(recipe);
+                MySqlCommand recipeCmd = new MySqlCommand(recipeQuery, connection);
+                MySqlDataReader recipeDataReader = recipeCmd.ExecuteReader();
+
+                ArrayList _recipes = new ArrayList();
+
+                while (recipeDataReader.Read())
+                {
+                    int recipeID = Convert.ToInt32(recipeDataReader["recipeID"]);
+                    string re_name = Convert.ToString(recipeDataReader["re_name"]);
+                    string description = Convert.ToString(recipeDataReader["description"]);
+                    string image = Convert.ToString(recipeDataReader["image"]);
+
+                    Recipe recipe = new Recipe(recipeID, re_name, description, image);
+                    _recipes.Add(recipe);
+                }
+                return _recipes;
             }
-            connection.Close();
-            return _recipes;
-            /*
-            string json = new JavaScriptSerializer().Serialize(_recipes);
-            return json;*/
         }
         
-        public ArrayList SearchRecipes(string keyword)
+        public  ArrayList SearchRecipes(string keyword)
         {
-            if (connection.State == System.Data.ConnectionState.Closed)
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
+            {
                 connection.Open();
-            ArrayList _recipes = new ArrayList();
+                ArrayList _recipes = new ArrayList();
 
-            string query = "SELECT * FROM recipe";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
-            MySqlDataReader dataReader = cmd.ExecuteReader();
+                string query = "SELECT recipeID, re_name, description, image FROM recipe WHERE MATCH(ingredients) AGAINST (@keyword IN NATURAL LANGUAGE MODE)";
 
-            int recipeID;
-            string re_name;
-            string description;
-            int re_time;
-            string ingredients;
-            string instructions;
-            string image;
-            string username;
-            while (dataReader.Read())
-            {
-                recipeID = Convert.ToInt32(dataReader["recipeID"]);
-                re_name = Convert.ToString(dataReader["re_name"]);
-                description = Convert.ToString(dataReader["description"]);
-                re_time = Convert.ToInt32(dataReader["re_time"]);
-                ingredients = Convert.ToString(dataReader["ingredients"]);
-                instructions = Convert.ToString(dataReader["instructions"]);
-                image = Convert.ToString(dataReader["image"]);
-                username = Convert.ToString(dataReader["userName"]);
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@keyword", keyword);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
 
-                Recipe recipe = new Recipe(recipeID, re_name, description, re_time, ingredients, instructions, image, username);
-                _recipes.Add(recipe);
-            }
-            
-            ArrayList result = new ArrayList();
-            string[] words = keyword.Split(' ');
-            for (int i = 0; i < _recipes.Count; i++)
-            {
-                Recipe recipe = (Recipe)_recipes[i];
-                int found = 0;
-                for (int j = 0; j < words.Length; j++)
+                while (dataReader.Read())
                 {
-                    if (recipe.Ingredients.IndexOf(words[j]) >= 0)
-                    {
-                        found = found + 1;
-                    }
+                    int recipeID = Convert.ToInt32(dataReader["recipeID"]);
+                    string re_name = Convert.ToString(dataReader["re_name"]);
+                    string description = Convert.ToString(dataReader["description"]);
+                    string image = Convert.ToString(dataReader["image"]);
+
+                    Recipe recipe = new Recipe(recipeID, re_name, description, image);
+                    _recipes.Add(recipe);
                 }
-                if (found == words.Length)
-                {
-                    result.Add(recipe);
-                }
+                return _recipes;
             }
-            connection.Close();
-            return result;
-            /*
-            string json = new JavaScriptSerializer().Serialize(result);
-            return json;
-            */
         }
 
         public Recipe GetRecipe(int id)
         {
-            if(connection.State == System.Data.ConnectionState.Closed)
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
+            {
                 connection.Open();
+                string query = "SELECT * FROM recipe LEFT OUTER JOIN usercomment ON recipe.recipeID = usercomment.recipeID WHERE recipe.recipeID = @id";
 
-            string query = "SELECT * FROM recipe LEFT OUTER JOIN usercomment ON recipe.recipeID = usercomment.recipeID WHERE recipe.recipeID = @id";
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@id", id);
+                MySqlDataReader recipeDataReader = cmd.ExecuteReader();
 
-            int recipeID;
-            string re_name;
-            string description;
-            int re_time;
-            string ingredients;
-            string instructions;
-            string image;
-            string username;
-            string cmtUser;
-            string comment;
-            
-            MySqlCommand cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@id",id);
-            MySqlDataReader recipeDataReader = cmd.ExecuteReader();
+                Recipe recipe = null;
 
-            Recipe recipe = null;
-            //int count = 0;
-            ArrayList _comments = new ArrayList();
-            while (recipeDataReader.Read())
-            {
-                recipeID = Convert.ToInt32(recipeDataReader["recipeID"]);
-                re_name = Convert.ToString(recipeDataReader["re_name"]);
-                description = Convert.ToString(recipeDataReader["description"]);
-                re_time = Convert.ToInt32(recipeDataReader["re_time"]);
-                ingredients = Convert.ToString(recipeDataReader["ingredients"]);
-                instructions = Convert.ToString(recipeDataReader["instructions"]);
-                image = Convert.ToString(recipeDataReader["image"]);
-                username = Convert.ToString(recipeDataReader["userName"]);
-                //count++;
-                recipe = new Recipe(recipeID, re_name, description, re_time, ingredients, instructions, image, username);
-
-                cmtUser = Convert.ToString(recipeDataReader["userCmtName"]);
-                comment = Convert.ToString(recipeDataReader["userCmt"]);
-                if (comment != "")
-                    _comments.Add(new UserComment(cmtUser, comment));
-            }
-            for (int i = 0; i < _comments.Count; i++)
-            {
-                UserComment uCmt = (UserComment)_comments[i];
-                string user = uCmt.UserName;
-                string cmt = uCmt.Comment;
-                recipe.AddComment(user, cmt);
-            }/*
-            while (count > 0)
-            {
-                cmtUser = Convert.ToString(recipeDataReader["userCmtName"]);
-                comment = Convert.ToString(recipeDataReader["userCmt"]);
-                if(comment != "")
-                    recipe.AddComment(cmtUser, comment);
-                count--;
-            }
-            */
-            connection.Close();
-            
-            if(recipe != null)
-            {
+                ArrayList _comments = new ArrayList();
+                while (recipeDataReader.Read())
+                {
+                    if (recipe == null)
+                    {
+                        int recipeID = Convert.ToInt32(recipeDataReader["recipeID"]);
+                        string re_name = Convert.ToString(recipeDataReader["re_name"]);
+                        string description = Convert.ToString(recipeDataReader["description"]);
+                        int re_time = Convert.ToInt32(recipeDataReader["re_time"]);
+                        string ingredients = Convert.ToString(recipeDataReader["ingredients"]);
+                        string instructions = Convert.ToString(recipeDataReader["instructions"]);
+                        string image = Convert.ToString(recipeDataReader["image"]);
+                        string username = Convert.ToString(recipeDataReader["userName"]);
+                        recipe = new Recipe(recipeID, re_name, description, re_time, ingredients, instructions, image, username);
+                    }
+                    string cmtUser = Convert.ToString(recipeDataReader["userCmtName"]);
+                    string comment = Convert.ToString(recipeDataReader["userCmt"]);
+                    if(comment != "")
+                    {
+                        recipe.AddComment(cmtUser, comment);
+                    }
+                }
                 return recipe;
-                /*
-                string json = new JavaScriptSerializer().Serialize(recipe);
-                return json;*/
             }
-            return null;
         }
-        
+
+        public Recipe AddRecipe(string name, string description, int time, string ingredients, string instruction, string image)
+        {
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
+            {
+                connection.Open();
+                string username = HttpContext.Current.Session["UserName"].ToString();
+                Recipe tmpRecipe = new Recipe(8, name, description, time, ingredients, instruction, image, username);
+
+                string query = "INSERT INTO recipe(re_name, description, re_time, ingredients, instructions, image, userName) VALUES " +
+                    "(@name,@description,@time,@ingredients,@instruction,@image, @username)";
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@description", description);
+                cmd.Parameters.AddWithValue("@time", time);
+                cmd.Parameters.AddWithValue("@ingredients", ingredients);
+                cmd.Parameters.AddWithValue("@instruction", instruction);
+                cmd.Parameters.AddWithValue("@image", image);
+                cmd.Parameters.AddWithValue("@username", username);
+                cmd.ExecuteNonQuery();
+
+                string lastIdQuery = "SELECT recipeID FROM recipe WHERE userName = @userName ORDER BY recipeID DESC LIMIT 1";
+                MySqlCommand idCmd = new MySqlCommand(lastIdQuery, connection);
+                idCmd.Parameters.AddWithValue("@userName", username);
+                idCmd.ExecuteNonQuery();
+                MySqlDataReader dataReader = idCmd.ExecuteReader();
+                bool check = dataReader.HasRows;
+                int id = 0;
+                if (dataReader.Read())
+                {
+                    id = Convert.ToInt32(dataReader["recipeID"]);
+                }
+                Recipe newRecipe = new Recipe(id, name, description, time, ingredients, instruction, image, username);
+                return newRecipe;
+            }
+        }
+
         public void AddComment(int recipeId, string comment)
         {
-            if (connection.State == System.Data.ConnectionState.Closed)
-                connection.Open();
-            
-            string username = HttpContext.Current.Session["UserName"].ToString();
-            if (username == "")
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
-                throw new System.ApplicationException("Guest user cannot add comment");
+                connection.Open();
+                string username = HttpContext.Current.Session["UserName"].ToString();
+                if (username == "")
+                {
+                    throw new System.ApplicationException("Guest user cannot add comment");
+                }
+
+                string query = "INSERT INTO usercomment(recipeID, userCmtName, userCmt) VALUES (" +
+                    "@id, @username, @comment)";
+
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@id", recipeId);
+                cmd.Parameters.AddWithValue("@username", username);
+                cmd.Parameters.AddWithValue("@comment", comment);
+                cmd.ExecuteNonQuery();
             }
-            
-            string query = "INSERT INTO usercomment(recipeID, userCmtName, userCmt) VALUES (" +
-                "@id, @username, @comment)";
-               
-            MySqlCommand cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@id", recipeId);
-            cmd.Parameters.AddWithValue("@username", username);
-            cmd.Parameters.AddWithValue("@comment", comment);
-            cmd.ExecuteNonQuery();
-            connection.Close();
         }
     }
 }

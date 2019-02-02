@@ -100,7 +100,7 @@ namespace MyRecipes
             {
                 throw new System.ArgumentException("Recipe's description must have at least 100 characters.");
             }
-            
+
             if (time == 0)
             {
                 throw new System.ArgumentException("Recipe's cook time must be greater than 0.");

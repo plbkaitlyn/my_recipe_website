@@ -26,6 +26,7 @@ function onSearchRecipes(result) {
     }
 }
 
+//display top 6 newest added recipes
 function displayRecipeHeadings(recipes) {
     var contents = document.getElementById("pageContents");
     while (contents.hasChildNodes()) {
@@ -33,17 +34,17 @@ function displayRecipeHeadings(recipes) {
     }
 
     var count = 0;
-    for (var i = recipes.length - 1; i >= 0; i--) {
+    for (var i = 0; i < recipes.length; i++) {
         count++;
         // Heading panel
         var recipeHeadingPanel = document.createElement("div");
         recipeHeadingPanel.setAttribute("class", "recipeHeadingPanel");
-        contents.appendChild(recipeHeadingPanel); //add cai div vua tao vao panel/ page content, 1 recipe vao 1 div con
+        contents.appendChild(recipeHeadingPanel); 
 
         // Image
         var recipeLink = document.createElement("a");
         recipeLink.setAttribute("href", "javascript:void(0);");
-        recipeLink.setAttribute("recipeId", recipes[i].Id); //property id cua recipe
+        recipeLink.setAttribute("recipeId", recipes[i].Id);
         recipeLink.addEventListener("click", function () {
             getRecipe(this.getAttribute("recipeId"));
         });
@@ -202,53 +203,6 @@ function onAddComment(result) {
     }
 }
 
-function login(username, password) {
-    RecipeService.Login(username, password, onLogin);
-}
-
-function onLogin(result) {
-    if (result === "") {
-        window.location.reload(true);
-    }
-    else {
-        var loginForm = document.getElementById("loginForm");
-        var errorMessage = document.getElementById("loginError");
-        if (errorMessage === null) {            
-            errorMessage = document.createElement("span");
-            errorMessage.setAttribute("id", "loginError");
-            errorMessage.setAttribute("class", "errorMessage");
-            loginForm.appendChild(document.createElement("br"));
-            loginForm.appendChild(document.createElement("br"));
-            loginForm.appendChild(errorMessage);
-        }
-        errorMessage.innerText = result;
-    }
-}
-
-function register(username, email, password, repassword) {
-    RecipeService.Register(username, email, password, repassword, onRegister);
-}
-
-function onRegister(result) {
-    if (result === "") {
-        displayLoginForm();
-    }
-    else {
-        var registerForm = document.getElementById("registerForm");
-        var errorMessage = document.getElementById("registerError");
-        if (errorMessage === null) {
-            errorMessage = document.createElement("span");
-            errorMessage.setAttribute("id", "registerError");
-            errorMessage.setAttribute("class", "errorMessage");
-            registerForm.appendChild(document.createElement("br"));
-            registerForm.appendChild(document.createElement("br"));
-            registerForm.appendChild(errorMessage);
-        }
-        errorMessage.innerText = result;
-
-    }
-}
-
 function displayLoginForm() {
     var contents = document.getElementById("pageContents");
     while (contents.hasChildNodes()) {
@@ -293,6 +247,29 @@ function displayLoginForm() {
         login(username.value, password.value);
     });
     loginForm.appendChild(loginButton);    
+}
+
+function login(username, password) {
+    RecipeService.Login(username, password, onLogin);
+}
+
+function onLogin(result) {
+    if (result === "") {
+        window.location.reload(true);
+    }
+    else {
+        var loginForm = document.getElementById("loginForm");
+        var errorMessage = document.getElementById("loginError");
+        if (errorMessage === null) {
+            errorMessage = document.createElement("span");
+            errorMessage.setAttribute("id", "loginError");
+            errorMessage.setAttribute("class", "errorMessage");
+            loginForm.appendChild(document.createElement("br"));
+            loginForm.appendChild(document.createElement("br"));
+            loginForm.appendChild(errorMessage);
+        }
+        errorMessage.innerText = result;
+    }
 }
 
 function displayRegisterForm() {
@@ -367,6 +344,30 @@ function displayRegisterForm() {
     });
     registerForm.appendChild(registerButton);
     
+}
+
+function register(username, email, password, repassword) {
+    RecipeService.Register(username, email, password, repassword, onRegister);
+}
+
+function onRegister(result) {
+    if (result === "") {
+        displayLoginForm();
+    }
+    else {
+        var registerForm = document.getElementById("registerForm");
+        var errorMessage = document.getElementById("registerError");
+        if (errorMessage === null) {
+            errorMessage = document.createElement("span");
+            errorMessage.setAttribute("id", "registerError");
+            errorMessage.setAttribute("class", "errorMessage");
+            registerForm.appendChild(document.createElement("br"));
+            registerForm.appendChild(document.createElement("br"));
+            registerForm.appendChild(errorMessage);
+        }
+        errorMessage.innerText = result;
+
+    }
 }
 
 function displayAddedRecipe() {
@@ -474,8 +475,7 @@ function displayAddedRecipe() {
         var image = document.getElementById("imageInput");
         addRecipe(name.value, description.value, time.value, ingredients.value, instruction.value, image.value);    //create a new Recipe object and add to the array list
     });
-    recipeForm.appendChild(addButton);
-    
+    recipeForm.appendChild(addButton); 
 }
 
 function addRecipe(name, description, time, ingredients, instruction, image) {
@@ -483,8 +483,7 @@ function addRecipe(name, description, time, ingredients, instruction, image) {
 }
 
 function onAddRecipe(result) {
-    var recipe = JSON.parse(result);
-    if (recipe === null) {
+    if (parseJSON(result) == false) {
         var recipeForm = document.getElementById("recipeForm");
         var errorMessage = document.getElementById("recipeError");
         if (errorMessage === null) {
@@ -498,8 +497,18 @@ function onAddRecipe(result) {
         errorMessage.innerText = result;
     }
     else {
+        var recipe = JSON.parse(result);
         displayRecipe(recipe);
     }
+}
+function parseJSON(jsonString) {
+    try {
+        var obj = JSON.parse(jsonString);
+        if (obj && typeof obj === "object")
+            return obj;
+    }
+    catch (e) { }
+    return false;
 }
 
 function logout() {

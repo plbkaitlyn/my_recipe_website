@@ -91,13 +91,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="MyRecipes.css" />
-    <Content Include="MyRecipes.js" />
     <Content Include="HomePage.aspx" />
+    <Content Include="MyRecipes.js" />
     <Content Include="RecipeService.svc" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Factory.cs" />
     <Compile Include="IRecipeData.cs" />
+    <Compile Include="IUserData.cs" />
     <Compile Include="RecipeDBData.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserComment.cs" />

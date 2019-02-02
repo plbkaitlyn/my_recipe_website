@@ -1,26 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace MyRecipes
 {
-    public abstract class IRecipeData
+    public interface IRecipeData
     {
-        public abstract Recipe getRecipeData(bool test);
+        ArrayList GetRecipeHeadings();
+        ArrayList SearchRecipes(string keywords);
+        Recipe GetRecipe(int id);
+        Recipe AddRecipe(string name, string description, int time, string ingredients, string instruction, string image);
+        void AddComment(int recipeID, string comment);
     }
-    /*
-    public class RecipeFactory : IRecipeData
-    {
-        public override Recipe getRecipeData(bool test)
-        {
-            if (test)
-            {
-                return new RecipeTestData();
-            }
-            else
-                return new RecipeDBData();
-        }
-    }
-    */
 }

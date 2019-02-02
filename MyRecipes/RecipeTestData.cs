@@ -7,7 +7,7 @@ using System.Web.Script.Serialization;
 
 namespace MyRecipes
 {
-    public class RecipeTestData : Recipe
+    public class RecipeTestData : IRecipeData
     {
         private static bool _initialised = false; 
         private static RecipeTestData _recipeData;
@@ -17,7 +17,7 @@ namespace MyRecipes
         {
             get { return _recipes; }
         }
-
+        
         public static RecipeTestData GetRecipeData()
         {
             if (_initialised == false)
@@ -27,19 +27,23 @@ namespace MyRecipes
             }
             return _recipeData;
         }
-
         
+
         private RecipeTestData()
         {
             GenerateData();
         }
-
-        public string GetRecipeHeadings()
+        
+        public ArrayList GetRecipeHeadings()
         {
+            //ArrayList recipes = Recipes;
+            //return recipes;
+            return _recipes;
+            /*
             string json = new JavaScriptSerializer().Serialize(_recipes);
-            return json;
+            return json;*/
         }
-
+        
         public Recipe GetRecipe(int id)
         {
             for (int i = 0; i < _recipes.Count; i++)
@@ -75,7 +79,29 @@ namespace MyRecipes
             }
             return result;
         }
-        
+
+        public Recipe AddRecipe(string name, string description, int time, string ingredients, string instructions, string image)
+        {
+            string username = HttpContext.Current.Session["UserName"].ToString();
+            Recipe tmpRecipe = new Recipe(8, name, description, time, ingredients, instructions, image, username);
+
+            RecipeTestData data = RecipeTestData.GetRecipeData();
+            int length = data.Recipes.Count;
+
+            int id = 0;
+            for (int i = 0; i < length; i++)
+            {
+                Recipe recipe = (Recipe)data.Recipes[i];
+                if (i == length - 1)
+                {
+                    id = recipe.Id + 1;
+                }
+            }
+            Recipe newRecipe = new Recipe(id, name, description, time, ingredients, instructions, image, username);
+            data.Recipes.Add(newRecipe);
+            return newRecipe;
+        }
+
         public void AddComment(int recipeId, string comment)
         {
             string username = HttpContext.Current.Session["UserName"].ToString();

@@ -15,10 +15,13 @@ namespace MyRecipes
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class RecipeService
     {
+        [DataMember]
+        bool testMode = false;
+
         [OperationContract]
         public string GetRecipeHeadings()
         {
-            RecipeDBData data = new RecipeDBData();
+            IRecipeData data = Factory.GetRecipeData(testMode);
             ArrayList _recipes = data.GetRecipeHeadings();
             string json = new JavaScriptSerializer().Serialize(_recipes);
             return json;
@@ -27,7 +30,7 @@ namespace MyRecipes
         [OperationContract]
         public string SearchRecipes(string keyword)
         {
-            RecipeDBData data = new RecipeDBData();
+            IRecipeData data = Factory.GetRecipeData(testMode);
             ArrayList result = data.SearchRecipes(keyword);
 
             string json = new JavaScriptSerializer().Serialize(result);
@@ -37,19 +40,34 @@ namespace MyRecipes
         [OperationContract]
         public string GetRecipe(int id)
         {
-            RecipeDBData data = new RecipeDBData();
+            IRecipeData data = Factory.GetRecipeData(testMode);
             Recipe recipe = data.GetRecipe(id);
             string json = new JavaScriptSerializer().Serialize(recipe);
             return json;
-            //return data.GetRecipe(id);
         }
-        
+
+        [OperationContract]
+        public string AddRecipe(string name, string description, int time, string ingredients, string instruction, string image)
+        {
+            try
+            {
+                IRecipeData data = Factory.GetRecipeData(testMode);
+                Recipe newRecipe = data.AddRecipe(name, description, time, ingredients, instruction, image);
+                string json = new JavaScriptSerializer().Serialize(newRecipe);
+                return json;
+            }
+            catch (Exception oEx)
+            {
+                return oEx.Message;
+            }
+        }
+
         [OperationContract]
         public string AddComment(int recipeId, string comment)
         {
             try
             {
-                RecipeDBData data = new RecipeDBData();
+                IRecipeData data = Factory.GetRecipeData(testMode);
                 data.AddComment(recipeId, comment);
                 return "";
             }
@@ -64,7 +82,7 @@ namespace MyRecipes
         {
             try
             {
-                UserDBData data = new UserDBData();
+                IUserData data = Factory.GetUserData(testMode);
                 User checkUser = new User(username, password);
                 data.Login(checkUser);
                 return ""; 
@@ -80,26 +98,10 @@ namespace MyRecipes
         {
             try
             {
-                UserDBData data = new UserDBData();
-                User newUser = new User(username, email, password);
-                data.Register(newUser, repassword);
+                IUserData data = Factory.GetUserData(testMode);
+                User newUser = new User(username, email, password, repassword);
+                data.Register(newUser);
                 return "";
-            }
-            catch (Exception oEx)
-            {
-                return oEx.Message;
-            }
-        }
-
-        [OperationContract]
-        public string AddRecipe(string name, string description, int time, string ingredients, string instruction, string image)
-        {
-            try
-            {
-                UserDBData data = new UserDBData();
-                Recipe newRecipe = data.AddRecipe(name, description, time, ingredients, instruction, image);
-                string json = new JavaScriptSerializer().Serialize(newRecipe);
-                return json;
             }
             catch (Exception oEx)
             {
@@ -110,7 +112,7 @@ namespace MyRecipes
         [OperationContract]
         public string Logout()
         {
-            UserDBData data = new UserDBData();
+            IUserData data = Factory.GetUserData(testMode);
             data.Logout();
             return "";
         }

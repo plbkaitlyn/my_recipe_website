@@ -36,7 +36,7 @@ namespace MyRecipes
             _userPassword = password;
         }
 
-        public User(string name, string email, string password)
+        public User(string name, string email, string password, string repassword)
         {
             if (name == "" || email == "" || password == "")
             {
@@ -46,7 +46,10 @@ namespace MyRecipes
             Match match = regex.Match(email);
             if (!match.Success)
                 throw new System.ApplicationException("Please provide a valid email address!");
-
+            if (password != repassword)
+            {
+                throw new System.ApplicationException("Password and confirm password must be the same!");
+            }
             _userName = name;
             _userEmail = email;
             _userPassword = password;
