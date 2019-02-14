@@ -7,7 +7,7 @@ CREATE TABLE USERDATA (
     email			VARCHAR(200)		NOT NULL,
     userPassword	VARCHAR(200)		NOT NULL,
     CONSTRAINT user_pk PRIMARY KEY (userName),
-	CONSTRAINT user_ck UNIQUE (email);
+	CONSTRAINT user_ck UNIQUE (email)
 );
 
 CREATE TABLE RECIPE (
@@ -19,7 +19,8 @@ CREATE TABLE RECIPE (
     instructions	VARCHAR(1000)	NOT NULL,
     image			VARCHAR(200)	NOT NULL,
 	userName		VARCHAR(200)	NOT NULL,
-	FULLTEXT(ingredients),
+	keywords		VARCHAR(1000)	NOT NULL,
+	FULLTEXT(keywords),
     CONSTRAINT recipe_pk PRIMARY KEY (recipeID),
 	CONSTRAINT recipe_fk1 FOREIGN KEY (userName) REFERENCES USERDATA (userName)
 );

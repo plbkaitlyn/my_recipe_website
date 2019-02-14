@@ -15,8 +15,8 @@ namespace MyRecipes
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class RecipeService
     {
-        [DataMember]
-        bool testMode = false;
+        //[DataMember]
+        public static bool testMode = false;
 
         [OperationContract]
         public string GetRecipeHeadings()
@@ -70,6 +70,23 @@ namespace MyRecipes
                 IRecipeData data = Factory.GetRecipeData(testMode);
                 data.AddComment(recipeId, comment);
                 return "";
+            }
+            catch (Exception oEx)
+            {
+                return oEx.Message;
+            }
+        }
+
+        [OperationContract]
+        public string AutoComplete()
+        {
+            try
+            {
+                IRecipeData data = Factory.GetRecipeData(testMode);
+                string[] words = data.AutoComplete();
+
+                string json = new JavaScriptSerializer().Serialize(words);
+                return json;
             }
             catch (Exception oEx)
             {

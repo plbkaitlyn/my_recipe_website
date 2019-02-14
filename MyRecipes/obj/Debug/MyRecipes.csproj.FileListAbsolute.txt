@@ -33,4 +33,3 @@ C:\Users\Phuong Linh\Documents\Project\cooking\MyRecipes\my_recipe\my_recipe_web
 C:\Users\Phuong Linh\Documents\Project\cooking\MyRecipes\my_recipe\my_recipe_website\MyRecipes\obj\Debug\MyRecipes.csproj.CopyComplete
 C:\Users\Phuong Linh\Documents\Project\cooking\MyRecipes\my_recipe\my_recipe_website\MyRecipes\obj\Debug\MyRecipes.dll
 C:\Users\Phuong Linh\Documents\Project\cooking\MyRecipes\my_recipe\my_recipe_website\MyRecipes\obj\Debug\MyRecipes.pdb
-C:\Users\Phuong Linh\Documents\Project\cooking\MyRecipes\my_recipe\my_recipe_website\MyRecipes\obj\Debug\MyRecipes.csprojResolveAssemblyReference.cache

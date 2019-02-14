@@ -9,7 +9,7 @@ function onGetRecipeHeadings(result) {
 
 function searchRecipes() {
     var keyword = document.getElementById("searchKeyword");
-    RecipeService.SearchRecipes(keyword.value, onSearchRecipes);
+    RecipeService.SearchRecipes(keyword.value.trim(), onSearchRecipes);
 }
 
 function onSearchRecipes(result) {
@@ -23,6 +23,140 @@ function onSearchRecipes(result) {
     }
     else {
         displayRecipeHeadings(recipes);
+    }
+}
+
+function hideSuggestions() {
+    var suggestionList = document.getElementById("suggestionList");
+    suggestionList.style.display = "none";
+}
+
+function displaySuggestions(inp, array) {
+    inp.addEventListener("keyup", function (e) {
+        var key = e.keyCode;
+        if (key == 38 || key == 40 || key == 13) {
+            return false;
+        }
+
+        var suggestionList = document.getElementById("suggestionList");
+        
+        var inputKeys = this.value.trim();
+        var lastKey = inputKeys;
+        var otherKeys = "";
+        var splittingPos = inputKeys.lastIndexOf(" ");
+        if (splittingPos > 0) {
+            lastKey = inputKeys.substr(splittingPos + 1);
+            otherKeys = inputKeys.substr(0, splittingPos + 1);
+        }
+        if (lastKey == "") {
+            return false;
+        }
+
+        while (suggestionList.hasChildNodes()) {
+            suggestionList.removeChild(suggestionList.lastChild);
+        }
+
+        var suggestionFound = 0;
+        var items;
+        for (i = 0; i < array.length; i++) {
+            if (lastKey == array[i].substr(0, lastKey.length)) {
+                suggestionFound++;
+                if (suggestionFound <= 5) {
+                    items = document.createElement("div");
+                    items.setAttribute("class", "suggestedValue");
+                    items.setAttribute("selected", "no");
+                    items.innerHTML = otherKeys + "<strong>" + array[i].substr(0, lastKey.length) + "</strong>";
+                    items.innerHTML += array[i].substr(lastKey.length);
+                    items.addEventListener("mousedown", function (e) { //cannot use "click" because it happens after onblur occurs
+                        inp.value = this.innerText;
+                        hideSuggestions();
+                    });
+                    suggestionList.appendChild(items);
+                }
+            }
+        }
+
+        if (suggestionFound > 0) {
+            var rect = inp.getBoundingClientRect();
+            suggestionList.style.left = Math.floor(rect.left) - 6 + "px";
+            suggestionList.style.top = Math.floor(rect.bottom) + 6 + "px";
+            suggestionList.style.display = "block";
+        }
+        else {
+            hideSuggestions();
+        }
+    });
+}
+
+function selectSuggestedValue(event) {
+    var key = event.keyCode;
+    var input = document.getElementById("searchKeyword");
+    var suggestionList = document.getElementById("suggestionList");
+    var selectedIndex;
+    
+    if (key == 38 || key == 40) {
+        var input = document.getElementById("searchKeyword");
+        var suggestionList = document.getElementById("suggestionList");
+        selectedIndex = -1;
+        for (var i = 0; i < suggestionList.childNodes.length; i++) {
+            if (suggestionList.childNodes[i].selected == "yes") {
+                selectedIndex = i; //only one value can be selected at a time
+            }
+        }
+
+        if (selectedIndex == -1) {
+            if (key == 40) {
+                selectedIndex = 0;
+            }
+        }
+        else {
+            if (key == 38) {
+                if (selectedIndex > 0) {
+                    suggestionList.childNodes[selectedIndex].selected = "no";
+                    suggestionList.childNodes[selectedIndex].style.backgroundColor = "#ffffff";
+                    selectedIndex--;
+                }
+            }
+            else {
+                if (selectedIndex < suggestionList.childNodes.length - 1) {
+                    suggestionList.childNodes[selectedIndex].selected = "no";
+                    suggestionList.childNodes[selectedIndex].style.backgroundColor = "#ffffff";
+                    selectedIndex++;
+                }
+            }
+        }
+        suggestionList.childNodes[selectedIndex].selected = "yes";
+        suggestionList.childNodes[selectedIndex].style.backgroundColor = "#f5dfaa";
+        input.value = suggestionList.childNodes[selectedIndex].innerText;
+    }
+    else if (key == 13) {
+        hideSuggestions();
+    }
+}
+
+function autoCompleteCall() {
+    RecipeService.AutoComplete(onAutoComplete);
+}
+
+function onAutoComplete(result) {
+    if (parseJSON(result) == false) {
+        var headerForm = document.getElementById("headerForm");
+        var errorMessage = document.getElementById("searchError");
+        if (errorMessage === null) {
+            errorMessage = document.createElement("span");
+            errorMessage.setAttribute("id", "searchError");
+            errorMessage.setAttribute("class", "errorMessage");
+            headerForm.appendChild(document.createElement("br"));
+            headerForm.appendChild(document.createElement("br"));
+            headerForm.appendChild(errorMessage);
+        }
+        errorMessage.innerText = result;
+    }
+    else {
+        var keywords = JSON.parse(result);
+        var input = document.getElementById("searchKeyword");
+        
+        displaySuggestions(input, keywords, event);
     }
 }
 
@@ -522,4 +656,9 @@ function onLogout(result)
 
 window.onload = function () {
     getRecipeHeadings();
+    autoCompleteCall();
 };
+
+window.onresize = function () {
+    hideSuggestions();
+}

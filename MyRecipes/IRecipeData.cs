@@ -13,5 +13,6 @@ namespace MyRecipes
         Recipe GetRecipe(int id);
         Recipe AddRecipe(string name, string description, int time, string ingredients, string instruction, string image);
         void AddComment(int recipeID, string comment);
+        string[] AutoComplete();
     }
 }

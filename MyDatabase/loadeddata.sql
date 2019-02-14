@@ -19,8 +19,9 @@ SET
 	@ingredients = "2 (10.75 ounce) cans condensed cream of chicken soup \n 1 1/2 cups chopped carrots \n 1 1/2 cups chopped celery \n 1 yellow onion, chopped",
 	@instructions = "Combine cream of chicken soup, carrots, celery, onion, stock, parsley, paprika, oregano, salt, and black pepper in a slow cooker and stir to combine \n Cook on Low for 7 1/2 hours \n Continue cooking on Low until heated through",
 	@image = "images\\6119674.jpg",
-	@userName = "admin";
-INSERT INTO RECIPE(re_name, description, re_time, ingredients, instructions, image, userName) VALUES (@re_name, @description, @re_time, @ingredients, @instructions, @image, @userName);
+	@userName = "admin",
+	@keywords = "cream chicken soup carrots celery onion";
+INSERT INTO RECIPE(re_name, description, re_time, ingredients, instructions, image, userName, keywords) VALUES (@re_name, @description, @re_time, @ingredients, @instructions, @image, @userName, @keywords);
 
 
 SET 
@@ -30,8 +31,9 @@ SET
 	@ingredients = "6 dried wild mushrooms \n 8 medium beets, trimmed \n 4 quarts water, or more as needed \n 2 cloves garlic, halved",
 	@instructions = "Place dried mushrooms in a bowl, cover with cold water, and soak for 30 minutes \n While mushrooms are soaking, place beets in a pot, cover with water, and bring to a boil. Reduce heat and simmer until tender, about 30 minutes \n Place sliced beets in a large pot and cover with 4 quarts water. Add drained mushrooms, onions, garlic, allspice, bay leaves, salt, and pepper",
 	@image = "images\\5136042.jpg",
-	@userName = "admin";
-INSERT INTO RECIPE(re_name, description, re_time, ingredients, instructions, image, userName) VALUES (@re_name, @description, @re_time, @ingredients, @instructions, @image, @userName);
+	@userName = "admin",
+	@keywords = "mushrooms beets garlic";
+INSERT INTO RECIPE(re_name, description, re_time, ingredients, instructions, image, userName, keywords) VALUES (@re_name, @description, @re_time, @ingredients, @instructions, @image, @userName, @keywords);
 
 SET 
 	@re_name = "Butternut Bisque",
@@ -40,8 +42,9 @@ SET
 	@ingredients = "3 tablespoons butter \n 1 large onion, diced \n 1 teaspoon kosher salt, plus more to taste, divided \n 1 (2 pound) butternut squash",
 	@instructions = "Melt butter in a pot over medium-low heat. Add onions and a large pinch of salt \n Cut off ends of squash. Carefully cut squash in half lengthwise and remove the seeds. Peel the squash with a vegetable peeler \n Raise heat under pot to medium-high. Stir in tomato paste; cook and stir until mixture begins to caramelize and turn brown, about 2 minutes",
 	@image = "images\\4684123.jpg",
-	@userName = "admin";
-INSERT INTO RECIPE(re_name, description, re_time, ingredients, instructions, image, userName) VALUES (@re_name, @description, @re_time, @ingredients, @instructions, @image, @userName);
+	@userName = "admin",
+	@keywords = "butter onion butternut bisque";
+INSERT INTO RECIPE(re_name, description, re_time, ingredients, instructions, image, userName, keywords) VALUES (@re_name, @description, @re_time, @ingredients, @instructions, @image, @userName, @keywords);
 
 SET 
 	@re_name = "Homemade Chicken Parmigiana",
@@ -50,8 +53,9 @@ SET
 	@ingredients = "1 tablespoon butter \n 1 egg, beaten \n 3 (5 ounce) skinless, boneless chicken breast halves \n 3/4 cup shredded Mozzarella cheese",
 	@instructions = "Melt butter in a saucepan over medium heat. Stir in garlic and onion, and cook until the onion has softened and turned translucent, about 2 minutes. Pour in diced tomatoes and sugar. \n Stir together bread crumbs, 2 tablespoons Parmesan cheese, and dried oregano; set aside. In a small bowl, whisk together egg and 2 tablespoons milk until blended \n Heat olive oil in a large skillet over medium heat. Add chicken breasts and cook on both sides until they reach an internal temperature of 160 degrees F (70 degrees C)",
 	@image = "images\\4473147.jpg",
-	@userName = "admin";
-INSERT INTO RECIPE(re_name, description, re_time, ingredients, instructions, image, userName) VALUES (@re_name, @description, @re_time, @ingredients, @instructions, @image, @userName);
+	@userName = "admin",
+	@keywords = "butter chicken breast Mozzarella cheese";
+INSERT INTO RECIPE(re_name, description, re_time, ingredients, instructions, image, userName, keywords) VALUES (@re_name, @description, @re_time, @ingredients, @instructions, @image, @userName, @keywords);
 
 SET 
 	@re_name = "Tuscan Pork Tenderloin",
@@ -60,8 +64,9 @@ SET
     @ingredients = "4 teaspoons garlic, minced \n 1 teaspoon ground black pepper \n 4 pounds pork tenderloin \n 2 teaspoons dried oregano",
     @instructions = "Combine garlic, rosemary, oregano, salt, and pepper in a small bowl. Rub spice mixture all over the pork tenderloin \n Bake in the preheated oven until pork is slightly pink in the center, 20 to 25 minutes. An instant-read thermometer inserted into the center should read at least 145 degrees F (63 degrees C)",
     @image = "images\\6155203.jpg",
-	@userName = "admin";
-INSERT INTO RECIPE(re_name, description, re_time, ingredients, instructions, image, userName) VALUES (@re_name, @description, @re_time, @ingredients, @instructions, @image, @userName);
+	@userName = "admin",
+	@keywords = "pork tenderloin garlic pepper oregano";
+INSERT INTO RECIPE(re_name, description, re_time, ingredients, instructions, image, userName, keywords) VALUES (@re_name, @description, @re_time, @ingredients, @instructions, @image, @userName, @keywords);
     
 SET 
     @re_name = "Easy Pineapple Chicken",
@@ -70,8 +75,9 @@ SET
     @ingredients = "3 tablespoons soy sauce \n 1 pound boneless, skinless chicken breast, cut into strips \n 1 red bell pepper, cubed \n 3 tablespoons olive oil, divided",
     @instructions = "Combine soy sauce, 2 tablespoons olive oil, paprika, and salt in a bowl \n Heat the remaining 1 tablespoon of olive oil in a wok. Add bell pepper and stir-fry for 3 minutes. Add scallions and cook for 2 more minutes",
     @image = "images\\5151529.jpg",
-	@userName = "admin";
-INSERT INTO RECIPE(re_name, description, re_time, ingredients, instructions, image, userName) VALUES (@re_name, @description, @re_time, @ingredients, @instructions, @image, @userName);
+	@userName = "admin",
+	@keywords = "soy sauce chicken breast bell pepper olive oil";
+INSERT INTO RECIPE(re_name, description, re_time, ingredients, instructions, image, userName, keywords) VALUES (@re_name, @description, @re_time, @ingredients, @instructions, @image, @userName, @keywords);
 
 INSERT INTO USERCOMMENT VALUES (01, "josh", "Good!");
 INSERT INTO USERCOMMENT VALUES (01, "evelyn", "It takes too much time.");

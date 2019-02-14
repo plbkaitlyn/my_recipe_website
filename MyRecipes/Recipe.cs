@@ -57,6 +57,12 @@ namespace MyRecipes
             get { return _username; }
         }
 
+        private string _keywords;
+        public string Keywords
+        {
+            get { return _keywords; }
+        }
+
         private ArrayList _userComments = new ArrayList();
         public ArrayList UserComments
         {
@@ -85,7 +91,7 @@ namespace MyRecipes
             _image = image;
         }
 
-        public Recipe(int id, string name, string description, int time, string ingredients, string instructions, string image, string username)
+        public Recipe(int id, string name, string description, int time, string ingredients, string instructions, string image, string username, string keywords)
         {
             if (name == null || name == "")
             {
@@ -125,6 +131,7 @@ namespace MyRecipes
             _instructions = instructions;
             _image = image;
             _username = username;
+            _keywords = keywords;
         }
 
         public void AddComment(string username, string comment)

@@ -12,8 +12,9 @@
 <body>
     <div id="pageHeader">
         <div id="headerForm">
-            <input type="text" id="searchKeyword" placeholder="Ingredients" /> &nbsp;
+            <input type="text" id="searchKeyword" placeholder="Ingredients" onkeydown="selectSuggestedValue(event);" onblur="hideSuggestions();"/> &nbsp; <!--- onkeydown="selectSuggestedValue(event);" --->
             <input type="button" class="inputButton" value="SEARCH" onclick="searchRecipes();" />
+            <div id="suggestionList"></div>
         </div>
     </div>
     <div id="pageNavigation">

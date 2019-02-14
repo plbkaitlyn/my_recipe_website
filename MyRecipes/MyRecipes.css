@@ -21,6 +21,24 @@
     width: 300px;
     line-height: 26px;
 }
+#suggestionList {
+    display: none;
+    position: absolute;
+    z-index: 100;
+    width: 300px;
+    border: 1px solid #f89650;
+    background-color: #ffffff;
+}
+.suggestedValue {
+    padding: 3px;
+    cursor: default;
+    user-select: none;
+}
+.suggestedValue:hover {
+    background-color: #f6e9ca !important;
+    padding: 3px;
+    user-select: none;
+}
 #pageNavigation {
     margin: auto;
     width: 90%;
